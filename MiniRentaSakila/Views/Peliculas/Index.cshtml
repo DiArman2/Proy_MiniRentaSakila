@@ -1,0 +1,71 @@
+﻿@model List<MiniRentaSakila.Models.Pelicula>
+@{
+    string rol = Context.Session.GetString(SessionKeys.Rol);
+}
+<h2>Catálogo de películas</h2>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success">@TempData["Mensaje"]</div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+@if (rol == "Administrador")
+{
+    <a asp-action="Crear" class="btn btn-success mb-3">Nueva película</a>
+}
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-auto">
+        <input type="text" name="titulo" value="@ViewBag.Titulo" class="form-control" placeholder="Buscar por título" />
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary">Buscar</button>
+    </div>
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Clasificación</th>
+            <th>Tarifa</th>
+            <th>Disponibles</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var pelicula in Model)
+        {
+            <tr>
+                <td>@pelicula.Titulo</td>
+                <td>@pelicula.Clasificacion</td>
+                <td>@pelicula.TarifaAlquiler.ToString("C")</td>
+                <td>
+                    @if (pelicula.CopiasDisponibles > 0)
+                    {
+                        <span class="badge bg-success">@pelicula.CopiasDisponibles de @pelicula.CopiasTotales</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">No disponible</span>
+                    }
+                </td>
+                <td>
+    <a asp-action="Detalle" asp-route-id="@pelicula.PeliculaId" class="btn btn-sm btn-outline-primary">Ver</a>
+
+    @if (rol == "Administrador")
+    {
+        <a asp-action="Editar" asp-route-id="@pelicula.PeliculaId" class="btn btn-sm btn-outline-secondary">Editar</a>
+        <a asp-action="Eliminar" asp-route-id="@pelicula.PeliculaId" class="btn btn-sm btn-outline-danger">Eliminar</a>
+        <a asp-controller="Inventario" asp-action="Index" asp-route-peliculaId="@pelicula.PeliculaId" class="btn btn-sm btn-outline-dark">Inventario</a>
+    }
+</td>
+            </tr>
+        }
+    </tbody>
+</table>

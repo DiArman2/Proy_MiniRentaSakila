@@ -1,0 +1,48 @@
+﻿@model MiniRentaSakila.Models.Pelicula
+
+<input type="hidden" asp-for="PeliculaId" />
+
+<div class="mb-3">
+    <label asp-for="Titulo" class="form-label">Título</label>
+    <input asp-for="Titulo" class="form-control" />
+    <span asp-validation-for="Titulo" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Descripcion" class="form-label">Descripción</label>
+    <textarea asp-for="Descripcion" class="form-control" rows="3"></textarea>
+    <span asp-validation-for="Descripcion" class="text-danger"></span>
+</div>
+
+<div class="row">
+    <div class="col-md-3 mb-3">
+        <label asp-for="AnioLanzamiento" class="form-label">Año</label>
+        <input asp-for="AnioLanzamiento" class="form-control" />
+        <span asp-validation-for="AnioLanzamiento" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <label asp-for="Duracion" class="form-label">Duración (min)</label>
+        <input asp-for="Duracion" class="form-control" />
+        <span asp-validation-for="Duracion" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <label asp-for="TarifaAlquiler" class="form-label">Tarifa</label>
+        <input asp-for="TarifaAlquiler" class="form-control" />
+        <span asp-validation-for="TarifaAlquiler" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <label asp-for="Clasificacion" class="form-label">Clasificación</label>
+        <select asp-for="Clasificacion" class="form-select">
+            <option value="">Seleccione...</option>
+            <option>G</option>
+            <option>PG</option>
+            <option>PG-13</option>
+            <option>R</option>
+            <option>NC-17</option>
+        </select>
+        <span asp-validation-for="Clasificacion" class="text-danger"></span>
+    </div>
+</div>

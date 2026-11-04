@@ -1,0 +1,14 @@
+﻿@model MiniRentaSakila.Models.Pelicula
+
+<h2>Eliminar película</h2>
+
+<div class="alert alert-warning">
+    ¿Seguro que deseas eliminar <strong>@Model.Titulo</strong> del catálogo?
+    El registro y su historial de alquileres se conservan en la base de datos.
+</div>
+
+<form asp-action="Eliminar" method="post">
+    <input type="hidden" name="id" value="@Model.PeliculaId" />
+    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

@@ -1,0 +1,10 @@
+﻿@model MiniRentaSakila.Models.Pelicula
+
+<h2>Editar película</h2>
+
+<form asp-action="Editar" method="post">
+    <partial name="_FormularioPelicula" model="Model" />
+
+    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

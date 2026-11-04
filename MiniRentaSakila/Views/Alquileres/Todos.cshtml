@@ -1,0 +1,35 @@
+﻿@model List<MiniRentaSakila.Models.Alquiler>
+
+<h2>Alquileres realizados</h2>
+<p class="text-muted">Últimos 100 alquileres registrados.</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Cliente</th>
+            <th>Película</th>
+            <th>Fecha de alquiler</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var alquiler in Model)
+        {
+            <tr>
+                <td>@alquiler.NombreCliente</td>
+                <td>@alquiler.TituloPelicula</td>
+                <td>@alquiler.FechaAlquiler.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>
+                    @if (alquiler.Devuelto)
+                    {
+                        <span class="badge bg-secondary">Devuelta</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning text-dark">Pendiente</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

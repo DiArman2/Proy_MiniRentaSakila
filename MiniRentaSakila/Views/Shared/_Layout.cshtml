@@ -1,0 +1,81 @@
+﻿@{
+    string nombreUsuario = Context.Session.GetString(SessionKeys.NombreUsuario);
+    string rol = Context.Session.GetString(SessionKeys.Rol);
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MiniRentaSakila</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/MiniRentaSakila.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+            <div class="container">
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">Renta Sakila</a>
+
+                <ul class="navbar-nav me-auto">
+                    @if (rol != null)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Peliculas" asp-action="Index">Películas</a>
+                        </li>
+                    }
+
+                    @if (rol == "Administrador")
+                    {
+                        <li class="nav-item">
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Alquileres" asp-action="Todos">Alquileres</a>
+                            </li>
+                            <a class="nav-link" asp-controller="Reportes" asp-action="PeliculasMasAlquiladas">Reporte</a>
+                        </li>
+                    }
+
+                    @if (rol == "Cliente")
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Alquileres" asp-action="MisAlquileres">Mis alquileres</a>
+                        </li>
+                    }
+                </ul>
+
+                @if (rol != null)
+                {
+                    <span class="navbar-text me-3">
+                        @nombreUsuario <span class="badge bg-secondary">@rol</span>
+                    </span>
+
+                    <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-outline-light btn-sm">Cerrar sesión</button>
+                    </form>
+                }
+                else
+                {
+                    <a class="btn btn-outline-light btn-sm" asp-controller="Account" asp-action="Login">Iniciar sesión</a>
+                }
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2026 - MiniRentaSakila - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,71 @@
+﻿@model MiniRentaSakila.Models.Pelicula
+
+@{
+    ViewData["Title"] = Model.Titulo;
+    string rol = Context.Session.GetString(SessionKeys.Rol);
+}
+
+<div class="mt-4">
+
+    <div class="mb-3">
+        <h1 class="mb-1">@Model.Titulo</h1>
+        <p class="text-muted mb-0">Detalle de la película y disponibilidad de copias.</p>
+    </div>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3">Descripción</dt>
+                <dd class="col-sm-9">@Model.Descripcion</dd>
+
+                <dt class="col-sm-3">Año</dt>
+                <dd class="col-sm-9">@Model.AnioLanzamiento</dd>
+
+                <dt class="col-sm-3">Duración</dt>
+                <dd class="col-sm-9">@Model.Duracion minutos</dd>
+
+                <dt class="col-sm-3">Clasificación</dt>
+                <dd class="col-sm-9">@Model.Clasificacion</dd>
+
+                <dt class="col-sm-3">Tarifa</dt>
+                <dd class="col-sm-9">$@Model.TarifaAlquiler.ToString("F2")</dd>
+
+                <dt class="col-sm-3">Disponibilidad</dt>
+                <dd class="col-sm-9">
+                    @if (Model.CopiasDisponibles > 0)
+                    {
+                        <span class="badge bg-success">@Model.CopiasDisponibles de @Model.CopiasTotales disponibles</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">No disponible</span>
+                    }
+                </dd>
+            </dl>
+        </div>
+
+        <div class="card-footer d-flex gap-2">
+            @if (rol == "Cliente")
+            {
+                if (Model.CopiasDisponibles > 0)
+                {
+                    <form asp-controller="Alquileres" asp-action="Alquilar" method="post">
+                        <input type="hidden" name="peliculaId" value="@Model.PeliculaId" />
+                        <button type="submit" class="btn btn-primary">Alquilar</button>
+                    </form>
+                }
+                else
+                {
+                    <button type="button" class="btn btn-secondary" disabled>No disponible</button>
+                }
+            }
+
+            <a asp-action="Index" class="btn btn-outline-secondary">Volver al catálogo</a>
+        </div>
+    </div>
+</div>

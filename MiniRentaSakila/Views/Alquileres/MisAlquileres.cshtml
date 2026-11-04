@@ -1,0 +1,59 @@
+﻿@model List<MiniRentaSakila.Models.Alquiler>
+
+<h2>Mis alquileres</h2>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success">@TempData["Mensaje"]</div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">Todavía no tienes alquileres.</div>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Película</th>
+                <th>Fecha de alquiler</th>
+                <th>Estado</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var alquiler in Model)
+            {
+                <tr>
+                    <td>@alquiler.TituloPelicula</td>
+                    <td>@alquiler.FechaAlquiler.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>
+                        @if (alquiler.Devuelto)
+                        {
+                            <span class="badge bg-secondary">Devuelta el @alquiler.FechaDevolucion.Value.ToString("dd/MM/yyyy")</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning text-dark">Pendiente</span>
+                        }
+                    </td>
+                    <td>
+                        @if (!alquiler.Devuelto)
+                        {
+                            <form asp-action="Devolver" method="post" class="d-inline">
+                                <input type="hidden" name="alquilerId" value="@alquiler.AlquilerId" />
+                                <button type="submit" class="btn btn-sm btn-outline-primary">Devolver</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

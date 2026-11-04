@@ -1,0 +1,22 @@
+﻿@{
+    string nombreUsuario = Context.Session.GetString(SessionKeys.NombreUsuario);
+    string rol = Context.Session.GetString(SessionKeys.Rol);
+}
+
+<h2>Bienvenido, @nombreUsuario</h2>
+<p>Has ingresado con el rol <strong>@rol</strong>.</p>
+
+<div class="d-flex gap-2">
+    <a asp-controller="Peliculas" asp-action="Index" class="btn btn-primary">Ver catálogo</a>
+
+    @if (rol == "Cliente")
+    {
+        <a asp-controller="Alquileres" asp-action="MisAlquileres" class="btn btn-outline-primary">Mis alquileres</a>
+    }
+
+    @if (rol == "Administrador")
+    {
+        <a asp-controller="Alquileres" asp-action="Todos" class="btn btn-outline-primary">Alquileres realizados</a>
+        <a asp-controller="Reportes" asp-action="PeliculasMasAlquiladas" class="btn btn-outline-primary">Reporte</a>
+    }
+</div>

@@ -1,0 +1,62 @@
+﻿@model MiniRentaSakila.Models.InventarioPeliculaViewModel
+
+<h2>Inventario: @Model.Pelicula.Titulo</h2>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success">@TempData["Mensaje"]</div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<p>
+    Copias totales: <strong>@Model.Pelicula.CopiasTotales</strong> |
+    Disponibles: <strong>@Model.Pelicula.CopiasDisponibles</strong>
+</p>
+
+<form asp-action="Agregar" method="post" class="mb-3">
+    <input type="hidden" name="peliculaId" value="@Model.Pelicula.PeliculaId" />
+    <button type="submit" class="btn btn-success">Agregar copia</button>
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Copia</th>
+            <th>Tienda</th>
+            <th>Estado</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var copia in Model.Copias)
+        {
+            <tr>
+                <td>@copia.InventarioId</td>
+                <td>@copia.TiendaId</td>
+                <td>
+                    @if (copia.Alquilada)
+                    {
+                        <span class="badge bg-danger">Alquilada</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-success">Disponible</span>
+                    }
+                </td>
+                <td>
+                    <form asp-action="Eliminar" method="post" class="d-inline">
+                        <input type="hidden" name="inventarioId" value="@copia.InventarioId" />
+                        <input type="hidden" name="peliculaId" value="@Model.Pelicula.PeliculaId" />
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-controller="Peliculas" asp-action="Index" class="btn btn-secondary">Volver al catálogo</a>
